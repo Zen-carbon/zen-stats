@@ -1,0 +1,22 @@
+<p-table
+  [value]="products"
+  showGridlines
+  stripedRows
+  [tableStyle]="{ 'min-width': '30rem' }"
+  size="small"
+>
+  <ng-template #header>
+    <tr>
+      <th>Sensor</th>
+      <th>Value</th>
+      <th>Status</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-product>
+    <tr>
+      <td>{{ product.sensor }}</td>
+      <td>{{ product.value }}</td>
+      <td>{{ product.status }}</td>
+    </tr>
+  </ng-template>
+</p-table>

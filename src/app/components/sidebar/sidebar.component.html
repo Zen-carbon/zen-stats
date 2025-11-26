@@ -1,0 +1,15 @@
+<p-drawer [(visible)]="visible" header="Zen">
+  <div class="flex flex-col justify-between h-full">
+    <div></div>
+    <button
+      pButton
+      type="button"
+      label="Logout"
+      icon="pi pi-sign-out"
+      severity="danger"
+      (click)="logOut()"
+      size="small"
+      class="w-1/2"
+    ></button>
+  </div>
+</p-drawer>
