@@ -1,5 +1,33 @@
 <div class="min-h-screen bg-gray-50 p-4 md:p-6">
   <div class="w-11/12 mx-auto">
+    @if (deviceData.isLoading()) {
+    <div class="flex flex-col justify-center items-center">
+      <p-progress-spinner
+        strokeWidth="4"
+        fill="transparent"
+        animationDuration=".5s"
+        ariaLabel="Loading Zen Stats"
+      />
+      <span>Loading Zen Stats</span>
+    </div>
+    } @else if (deviceData.isError()) {
+    <div class="flex flex-col justify-center items-center">
+      <p-message severity="error"
+        >Error loading Zen Stats. Please try again.
+        <p-button
+          size="small"
+          icon="pi pi-refresh"
+          label="Reload"
+          severity="danger"
+          (onClick)="deviceData.refetch()"
+        ></p-button
+      ></p-message>
+    </div>
+
+    }@else if (!deviceData.data()?.length) {
+    <app-empty-state (reload)="deviceData.refetch()" />
+
+    } @else if(deviceData.data()?.length) {
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div class="lg:col-span-1 space-y-6">
         <div
@@ -8,11 +36,98 @@
           <app-sensor-value />
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h3 class="text-lg font-semibold text-gray-800 mb-4">
-            Frequency Setter
-          </h3>
-          
+        <div
+          class="flex flex-col bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200 space-y-5"
+        >
+          <div class="space-y-2">
+            <span class="text-gray-700 font-medium">Date Range</span>
+            <p-datepicker
+              [(ngModel)]="rangeDates"
+              selectionMode="range"
+              [readonlyInput]="true"
+              showIcon="true"
+              class="w-full"
+            ></p-datepicker>
+          </div>
+
+          <p-divider />
+
+          <div class="space-y-2">
+            <span class="text-gray-700 font-medium">Time Range</span>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <p-datepicker
+                [(ngModel)]="startTime"
+                [timeOnly]="true"
+                placeholder="Start Time"
+                class="w-full"
+              ></p-datepicker>
+
+              <p-datepicker
+                [(ngModel)]="endTime"
+                [timeOnly]="true"
+                placeholder="End Time"
+                class="w-full"
+              ></p-datepicker>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2">
+        <div
+          class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200"
+        >
+          <canvas id="deviceChart"></canvas>
+        </div>
+      </div>
+    </div>
+    }
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-1 space-y-6">
+        <div
+          class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200"
+        >
+          <app-sensor-value />
+        </div>
+
+        <div
+          class="flex flex-col bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200 space-y-5"
+        >
+          <div class="space-y-2">
+            <span class="text-gray-700 font-medium">Date Range</span>
+            <p-datepicker
+              [(ngModel)]="rangeDates"
+              selectionMode="range"
+              [readonlyInput]="true"
+              showIcon="true"
+              class="w-full"
+            ></p-datepicker>
+          </div>
+
+          <p-divider />
+
+          <div class="space-y-2">
+            <span class="text-gray-700 font-medium">Time Range</span>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <p-datepicker
+                [(ngModel)]="startTime"
+                [timeOnly]="true"
+                placeholder="Start Time"
+                class="w-full"
+                size="small"
+              ></p-datepicker>
+
+              <p-datepicker
+                [(ngModel)]="endTime"
+                [timeOnly]="true"
+                placeholder="End Time"
+                class="w-full"
+                size="small"
+              ></p-datepicker>
+            </div>
+          </div>
         </div>
       </div>
 
