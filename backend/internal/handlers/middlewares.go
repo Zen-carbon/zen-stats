@@ -73,7 +73,7 @@ func CORSmiddleware(frontendUrls []string) gin.HandlerFunc {
 		origin := ctx.Request.Header.Get("Origin")
 
 		for _, allowedOrigin := range frontendUrls {
-			if origin == allowedOrigin {
+			if origin == allowedOrigin || allowedOrigin == "*" {
 				ctx.Writer.Header().Set("Access-Control-Allow-Origin", origin)
 				break
 			}
