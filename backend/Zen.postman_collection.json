@@ -1,0 +1,316 @@
+{
+	"info": {
+		"_postman_id": "8d52ddf9-94a3-4f96-86b3-461dc0a41f13",
+		"name": "Zen",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30814635"
+	},
+	"item": [
+		{
+			"name": "Device",
+			"item": [
+				{
+					"name": "Create Device",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"esp-20\",\n    \"status\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/devices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Device",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/devices/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"devices",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/devices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Device",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/devices/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"devices",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Device",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/devices/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"devices",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Device Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/devices/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"devices",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Readings",
+			"item": [
+				{
+					"name": "Create Reading",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"co2\": 1111,\n    \"pressure\": 73.1,\n    \"temperature\": 28.2,\n    \"server_timestamp\": \"2025-11-16T08:35:09.485Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/readings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"readings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reading",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/readings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"readings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "597"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Reading",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"co2\": 516, \"pressure\": 86, \"temperature\": 32.1, \"server_timestamp\": \"2025-11-18T17:53:01.144Z\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/readings?device_id=1&list_by=timeslot&start=2025-11-12T11:52:31.581Z&end=2025-11-12T11:53:31.581Z&date=2025-11-18",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"readings"
+							],
+							"query": [
+								{
+									"key": "device_id",
+									"value": "1"
+								},
+								{
+									"key": "list_by",
+									"value": "timeslot"
+								},
+								{
+									"key": "start",
+									"value": "2025-11-12T11:52:31.581Z"
+								},
+								{
+									"key": "end",
+									"value": "2025-11-12T11:53:31.581Z"
+								},
+								{
+									"key": "date",
+									"value": "2025-11-18"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health-check",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"health-check"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
