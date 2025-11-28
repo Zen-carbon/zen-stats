@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/Edwin9301/Zen/backend/internal/repository"
 	"github.com/Edwin9301/Zen/backend/pkg"
@@ -144,15 +145,14 @@ func (s *Server) listSensorReadingsHandler(ctx *gin.Context) {
 		}
 
 		dateStr := ctx.Query("date")
-		if dateStr == "" {
-			ctx.JSON(http.StatusBadRequest, errorResponse(pkg.Errorf(pkg.INVALID_ERROR, "date query parameter is required for date-based listing")))
-			return
-		}
+		date := time.Now()
 
-		date, err := pkg.StrToDate(dateStr)
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, errorResponse(pkg.Errorf(pkg.INVALID_ERROR, "invalid date format")))
-			return
+		if dateStr != "" {
+			date, err = pkg.StrToDate(dateStr)
+			if err != nil {
+				ctx.JSON(http.StatusBadRequest, errorResponse(pkg.Errorf(pkg.INVALID_ERROR, "invalid date format")))
+				return
+			}
 		}
 
 		filter := &repository.ReadingFilter{
