@@ -39,73 +39,17 @@
         <div
           class="flex flex-col bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200 space-y-5"
         >
-          <div class="space-y-2">
-            <span class="text-gray-700 font-medium">Date Range</span>
+          <div class="flex flex-col space-y-2">
+            <span class="text-gray-700 font-medium">Date </span>
             <p-datepicker
-              [(ngModel)]="rangeDates"
-              selectionMode="range"
-              [readonlyInput]="true"
-              showIcon="true"
-              class="w-full"
-            ></p-datepicker>
+              [(ngModel)]="selectedDate"
+              [showClear]="true"
+              size="small"
+              placeholder="Select Date"
+            />
           </div>
 
-          <p-divider />
-
-          <div class="space-y-2">
-            <span class="text-gray-700 font-medium">Time Range</span>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <p-datepicker
-                [(ngModel)]="startTime"
-                [timeOnly]="true"
-                placeholder="Start Time"
-                class="w-full"
-              ></p-datepicker>
-
-              <p-datepicker
-                [(ngModel)]="endTime"
-                [timeOnly]="true"
-                placeholder="End Time"
-                class="w-full"
-              ></p-datepicker>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="lg:col-span-2">
-        <div
-          class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200"
-        >
-          <canvas id="deviceChart"></canvas>
-        </div>
-      </div>
-    </div>
-    }
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-1 space-y-6">
-        <div
-          class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200"
-        >
-          <app-sensor-value />
-        </div>
-
-        <div
-          class="flex flex-col bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200 space-y-5"
-        >
-          <div class="space-y-2">
-            <span class="text-gray-700 font-medium">Date Range</span>
-            <p-datepicker
-              [(ngModel)]="rangeDates"
-              selectionMode="range"
-              [readonlyInput]="true"
-              showIcon="true"
-              class="w-full"
-            ></p-datepicker>
-          </div>
-
-          <p-divider />
+          <p-divider type="dashed" />
 
           <div class="space-y-2">
             <span class="text-gray-700 font-medium">Time Range</span>
@@ -139,5 +83,6 @@
         </div>
       </div>
     </div>
+    }
   </div>
 </div>

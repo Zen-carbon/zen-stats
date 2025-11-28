@@ -38,7 +38,7 @@ export class DeviceDetailComponent {
   ingredient: string = 'Cheese';
   selectedFrequencyOption = signal('');
   deviceData = deviceDetailQuery(this.deviceId);
-  rangeDates = signal<Date[]>([]);
+  selectedDate = signal<Date[]>([]);
   startTime = signal<Date | null>(null);
   endTime = signal<Date | null>(null);
 
@@ -50,7 +50,7 @@ export class DeviceDetailComponent {
     });
 
     effect(() => {
-      console.log('Range Dates:', this.rangeDates());
+      console.log('Selected Date:', this.selectedDate());
       console.log('Start Time:', this.startTime());
       console.log('End Time:', this.endTime());
     });
