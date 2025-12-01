@@ -27,7 +27,7 @@ export class SidebarComponent {
     {
       label: 'Batch Experiment',
       icon: 'pi pi-sliders-h',
-      route: '/batch-experiment',
+      route: '/batch-experiments',
     },
   ];
 

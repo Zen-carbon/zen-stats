@@ -1,51 +1,54 @@
 import { Component, inject, signal } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
-import { Dialog } from 'primeng/dialog';
-import { ReactorModalComponent } from './reactor-modal/reactor-modal.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Dialog } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
+import { Toast } from 'primeng/toast';
+import { BatchExperimentModalComponent } from './batch-experiment-modal/batch-experiment-modal.component';
 
 @Component({
-  selector: 'app-reactor',
+  selector: 'app-batch-experiment',
   imports: [
     TableModule,
     ButtonModule,
     Dialog,
-    ReactorModalComponent,
-    ToastModule,
+    BatchExperimentModalComponent,
+    Toast,
     ConfirmDialog,
   ],
-  templateUrl: './reactor.component.html',
+  templateUrl: './batch-experiment.component.html',
   providers: [ConfirmationService, MessageService],
 })
-export class ReactorComponent {
+export class BatchExperimentComponent {
   displayModal = signal(false);
   isEditMode = signal(false);
   confirmationService = inject(ConfirmationService);
   messageService = inject(MessageService);
-  loading = signal(true);
-  selectedReactor = signal<{ id: number; name: string; status: string } | null>(
-    null
-  );
-
-  reactors = [
-    { id: 1, name: 'Reactor A', status: 'Active' },
-    { id: 2, name: 'Reactor B', status: 'Inactive' },
-    { id: 3, name: 'Reactor C', status: 'Maintenance' },
+  batchExperiments = [
+    { id: 1, name: 'Experiment 1', status: 'Running' },
+    { id: 2, name: 'Experiment 2', status: 'Completed' },
+    { id: 3, name: 'Experiment 3', status: 'Failed' },
   ];
 
-  editReactor = (reactor: { id: number; name: string; status: string }) => {
-    this.selectedReactor.set(reactor);
+  editBatchExperiment = (experiment: {
+    id: number;
+    name: string;
+    status: string;
+  }) => {
     this.isEditMode.set(true);
     this.displayModal.set(true);
   };
 
-  deleteReactor = (reactorId: number) => {
+  createBatchExperiment = () => {
+    this.isEditMode.set(false);
+    this.displayModal.set(true);
+  };
+
+  deleteBatchExperiment = (experimentId: number) => {
     this.confirmationService.confirm({
       header: 'Confirmation',
-      message: 'Are you sure you want to delete this reactor?',
+      message: 'Are you sure you want to delete this experiment?',
       rejectButtonProps: {
         label: 'Cancel',
         severity: 'secondary',
