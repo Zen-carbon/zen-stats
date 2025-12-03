@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -138,9 +139,9 @@ func (s *Server) requestPasswordReset(ctx *gin.Context) {
 	}
 
 	go func(email string, emailBody string) {
-		// if err := s.email.SendMail("Reset Password", emailBody, "text/html", []string{email}, nil, nil, nil, nil); err != nil {
-		// 	log.Printf("failed to send password reset email to %s: %v", email, err)
-		// }
+		if err := s.email.SendMail("Reset Password", emailBody, "text/html", []string{email}, nil, nil, nil, nil); err != nil {
+			log.Printf("failed to send password reset email to %s: %v", email, err)
+		}
 	}(user.Email, emailBody)
 
 	ctx.JSON(http.StatusOK, gin.H{"data": "password reset email sent"})

@@ -75,9 +75,9 @@ func (s *Server) createUser(ctx *gin.Context) {
 	}
 
 	go func(email string, emailBody string) {
-		// if err := s.email.SendMail("Welcome Message", emailBody, "text/html", []string{email}, nil, nil, nil, nil); err != nil {
-		// 	log.Printf("failed to send password reset email to %s: %v", email, err)
-		// }
+		if err := s.email.SendMail("Welcome Message", emailBody, "text/html", []string{email}, nil, nil, nil, nil); err != nil {
+			log.Printf("failed to send password reset email to %s: %v", email, err)
+		}
 	}(createdUser.Email, emailBody)
 
 	ctx.JSON(http.StatusCreated, gin.H{"data": createdUser})
