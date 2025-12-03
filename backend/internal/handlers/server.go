@@ -74,7 +74,7 @@ func (s *Server) setUpRoutes() {
 	v1.POST("/reset-password", s.resetPassword)
 
 	// user routes
-	v1.POST("/users", s.createUser)
+	adminGroup.POST("/users", s.createUser)
 	authGroup.GET("/users/:id", s.getUser)
 	adminGroup.GET("/users", s.listUsers)
 	authGroup.PUT("/users/:id", s.updateUser)
