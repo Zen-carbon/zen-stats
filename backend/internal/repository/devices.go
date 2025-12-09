@@ -11,13 +11,13 @@ import (
 type Device struct {
 	ID        uint32    `json:"id"`
 	Name      string    `json:"name"`
-	ReactorID uint32    `json:"reactor_id"`
+	ReactorID uint32    `json:"reactorId"`
 	Status    bool      `json:"status"`
-	CreatedAt time.Time `json:"created_at"`
+	CreatedAt time.Time `json:"createdAt"`
 }
 
 type DeviceUpdate struct {
-	ReactorID *uint32 `json:"reactor_id"`
+	ReactorID *uint32 `json:"reactorId"`
 	Name      *string `json:"name"`
 	Status    *bool   `json:"status"`
 }

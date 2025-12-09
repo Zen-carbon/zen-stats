@@ -14,7 +14,7 @@ type User struct {
 	PhoneNumber string    `json:"phoneNumber"`
 	Role        string    `json:"role"`
 	IsActive    bool      `json:"isActive"`
-	CreatedAt   time.Time `json:"created_at"`
+	CreatedAt   time.Time `json:"createdAt"`
 }
 
 type UpdateUser struct {

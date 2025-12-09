@@ -20,7 +20,7 @@ type Experiment struct {
 	ExposureConditions ExposureConditions `json:"exposureConditions"`
 	AnalyticalTests    []AnalyticalTests  `json:"analyticalTests"`
 	DeletedAt          *time.Time         `json:"deletedAt"`
-	CreatedAt          time.Time          `json:"created_at"`
+	CreatedAt          time.Time          `json:"createdAt"`
 }
 
 type MaterialFeedstock struct {

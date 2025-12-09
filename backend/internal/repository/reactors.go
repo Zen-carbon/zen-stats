@@ -14,7 +14,7 @@ type Reactor struct {
 	Pathway   string     `json:"pathway"`
 	PdfUrl    string     `json:"pdfUrl"`
 	DeletedAt *time.Time `json:"deletedAt"`
-	CreatedAt time.Time  `json:"created_at"`
+	CreatedAt time.Time  `json:"createdAt"`
 }
 
 type UpdateReactor struct {
