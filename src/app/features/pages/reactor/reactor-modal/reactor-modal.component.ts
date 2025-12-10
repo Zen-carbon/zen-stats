@@ -203,6 +203,9 @@ export class ReactorModalComponent {
           if (this.reactorData) {
             this.reactorData.pdfUrl = '';
             this.reactorForm.patchValue({ pdfUrl: '' });
+            this.reactorService
+              .updateReactor(this.reactorData.id, this.reactorData)
+              .subscribe();
           }
           this.selectedFile.set(null);
         },
