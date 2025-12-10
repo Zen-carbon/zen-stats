@@ -97,6 +97,7 @@
             <th>Name</th>
             <th>Status</th>
             <th>Actions</th>
+            <th>Sensor Data</th>
           </tr>
         </ng-template>
         <ng-template #body let-device>
@@ -142,6 +143,18 @@
                 severity="danger"
                 icon="pi pi-trash"
               ></button>
+            </td>
+            <td>
+              <a [routerLink]="['/device', device.id]">
+                <button
+                  pButton
+                  type="button"
+                  class="p-button-text"
+                  icon="pi pi-external-link"
+                  iconPos="right"
+                  severity="info"
+                ></button>
+              </a>
             </td>
           </tr>
         </ng-template>
