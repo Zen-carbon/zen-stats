@@ -2,7 +2,7 @@
   <div class="flex items-center justify-between py-3">
     <div class="flex items-center gap-4">
       <button
-        class="text-gray-600 text-xl cursor-pointer"
+        class="text-gray-600 text-xl cursor-pointer block md:hidden"
         (click)="sidebarVisible.set(!sidebarVisible())"
       >
         <i class="pi pi-list md:text-3xl"></i>
@@ -16,6 +16,17 @@
         Welcome Back,
         <span class="font-semibold text-green-600">{{ username()?.name }}</span>
       </span>
+    </div>
+    <div class="hidden md:block">
+      <button
+        pButton
+        severity="danger"
+        icon="pi pi-sign-out"
+        (click)="logOut()"
+        [loading]="loading()"
+      >
+        Logout
+      </button>
     </div>
   </div>
 </div>
