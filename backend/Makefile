@@ -1,5 +1,5 @@
 DATABASE_URL=postgres://backend:secret@localhost:5432/zed?sslmode=disable
-MIGRATIONS_PATH=file:///home/emilio-cliff/zen-stats/backend/internal/postgres/migrations
+MIGRATIONS_PATH=file:///Users/emiliocliff/projects/zen-stats/backend/internal/postgres/migrations
 
 test:
 	go test -v ./...
@@ -34,9 +34,9 @@ migrateDown:
 	migrate -source ${MIGRATIONS_PATH} -database ${DATABASE_URL} -verbose down
 
 createDb:
-	docker run --name zed-db -e POSTGRES_PASSWORD=secret -e POSTGRES_USER=backend -e POSTGRES_DB=zed -p 5432:5432 -d 0150e3200277
+	docker run --name zed-db -e POSTGRES_PASSWORD=secret -e POSTGRES_USER=backend -e POSTGRES_DB=zed -p 5432:5432 -d 38d5c9d52203
 
 createRedis:
-	docker run --name zed-redis -p 6379:6379 -d e1618a841b34
+	docker run --name zed-redis -p 6379:6379 -d 3906b477e4b6
 
 .PHONY: test race-test sqlc run coverage build mock createMigrate migrateUp migrateDown createDb createRedis

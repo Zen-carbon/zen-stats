@@ -26,7 +26,7 @@ func NewReactorRepository(store *Store) *ReactorRepository {
 func (r *ReactorRepository) CreateReactor(ctx context.Context, reactor *repository.Reactor) (*repository.Reactor, error) {
 	createParams := generated.CreateReactorParams{
 		Name:    reactor.Name,
-		Status:  reactor.Status,
+		Status:  strings.ToLower(reactor.Status),
 		Pathway: pgtype.Text{Valid: false},
 		PdfUrl:  pgtype.Text{Valid: false},
 	}
@@ -71,7 +71,8 @@ func (r *ReactorRepository) UpdateReactor(ctx context.Context, updateReactor *re
 		updateParams.Name = pgtype.Text{String: *updateReactor.Name, Valid: true}
 	}
 	if updateReactor.Status != nil {
-		updateParams.Status = pgtype.Text{String: *updateReactor.Status, Valid: true}
+		status := strings.ToLower(*updateReactor.Status)
+		updateParams.Status = pgtype.Text{String: status, Valid: true}
 	}
 	if updateReactor.Pathway != nil {
 		updateParams.Pathway = pgtype.Text{String: *updateReactor.Pathway, Valid: true}

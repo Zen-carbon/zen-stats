@@ -65,10 +65,25 @@ WHERE deleted_at IS NULL
     )
     AND (
         sqlc.narg('date')::timestamptz IS NULL 
-        OR date = sqlc.narg('date')
+        OR date::date = sqlc.narg('date')
     );
 
 -- name: DeleteExperiment :exec
 UPDATE experiments
 SET deleted_at = now()
 WHERE id = sqlc.arg('id') AND deleted_at IS NULL;
+
+-- name: CountExperimentsRunToday :one
+SELECT COUNT(*) AS experiments_done_today
+FROM experiments
+WHERE date::date = CURRENT_DATE AND deleted_at IS NULL;
+
+-- name: CountExperimentsRunThisWeek :one
+SELECT COUNT(*) AS experiments_done_this_week
+FROM experiments
+WHERE date >= date_trunc('week', CURRENT_DATE) AND deleted_at IS NULL;
+
+-- name: GetAverageExperimentDuration :one
+SELECT AVG(EXTRACT(EPOCH FROM (time_end - time_start))) AS average_experiment_duration
+FROM experiments
+WHERE deleted_at IS NULL;

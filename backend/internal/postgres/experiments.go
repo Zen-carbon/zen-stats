@@ -50,6 +50,10 @@ func (e *ExperimentRepository) CreateExperiment(ctx context.Context, experiment 
 		return nil, pkg.Errorf(pkg.INTERNAL_ERROR, "failed to parse end time: %v", err)
 	}
 
+	if endTime.Microseconds < startTime.Microseconds {
+		return nil, pkg.Errorf(pkg.INVALID_ERROR, "end time cannot be earlier than start time")
+	}
+
 	createParams := generated.CreateExperimentParams{
 		BatchID:            experiment.BatchID,
 		ReactorID:          int64(experiment.ReactorID),

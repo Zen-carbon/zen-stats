@@ -106,6 +106,9 @@ func (s *Server) setUpRoutes() {
 	v1.GET("/readings/:id", s.getSensorReadingByIDHandler)
 	v1.GET("/readings", s.listSensorReadingsHandler)
 
+	// helpers routes
+	authGroup.GET("/dashboard/stats", s.getDashboardStatsHandler)
+
 	s.srv = &http.Server{
 		Addr:         s.config.SERVER_ADDRESS,
 		Handler:      s.router.Handler(),

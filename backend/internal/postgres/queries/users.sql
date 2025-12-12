@@ -86,3 +86,10 @@ WHERE id = $1;
 UPDATE users
 SET refresh_token = sqlc.arg('refresh_token')
 WHERE id = $1;
+
+-- name: CountTotalInactiveActiveUsers :one
+SELECT
+    (SELECT COUNT(*) FROM users) AS total_users,
+    (SELECT COUNT(*) FROM users WHERE is_active = true) AS active_users,
+    (SELECT COUNT(*) FROM users WHERE is_active = false) AS inactive_users;
+    

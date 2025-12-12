@@ -33,6 +33,21 @@ type FilterUsers struct {
 	Role       *string
 }
 
+type DashboardStats struct {
+	TotalUsers                       uint32  `json:"totalUsers,omitempty"`
+	ActiveUsers                      uint32  `json:"activeUsers,omitempty"`
+	InactiveUsers                    uint32  `json:"inactiveUsers,omitempty"`
+	TotalDevices                     uint32  `json:"totalDevices"`
+	ActiveDevices                    uint32  `json:"activeDevices"`
+	InactiveDevices                  uint32  `json:"inactiveDevices"`
+	TotalReactors                    uint32  `json:"totalReactors"`
+	ActiveReactors                   uint32  `json:"activeReactors"`
+	InactiveReactors                 uint32  `json:"inactiveReactors"`
+	ExperimentsRunToday              uint32  `json:"experimentsRunToday"`
+	ExperimentsRunThisWeek           uint32  `json:"experimentsRunThisWeek"`
+	AverageExperimentDurationSeconds float64 `json:"averageExperimentDurationSeconds"`
+}
+
 type UserRepository interface {
 	CreateUser(ctx context.Context, user *User, hashedPassword string) (*User, error)
 	GetUserByID(ctx context.Context, id uint32) (*User, error)
@@ -45,4 +60,7 @@ type UserRepository interface {
 	GetUserPassword(ctx context.Context, email string) (string, error)
 	GetUserRefreshToken(ctx context.Context, userID uint32) (string, error)
 	UpdateUserRefreshToken(ctx context.Context, userID uint32, refreshToken string) error
+
+	// dashboard stats
+	GetDashboardData(ctx context.Context, isAdmin bool) (*DashboardStats, error)
 }

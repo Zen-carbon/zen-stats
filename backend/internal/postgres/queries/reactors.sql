@@ -54,3 +54,9 @@ WHERE deleted_at IS NULL
 UPDATE reactors
 SET deleted_at = now()
 WHERE id = $1 AND deleted_at IS NULL;
+
+-- name: CountActiveInactiveReactors :one
+SELECT
+    (SELECT COUNT(*) FROM reactors WHERE deleted_at IS NULL) AS total_reactors,
+    (SELECT COUNT(*) FROM reactors WHERE status = 'active' AND deleted_at IS NULL) AS active_reactors,
+    (SELECT COUNT(*) FROM reactors WHERE status = 'inactive' AND deleted_at IS NULL) AS inactive_reactors;

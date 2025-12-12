@@ -33,3 +33,10 @@ SELECT
     (SELECT COUNT(*) FROM device WHERE status = TRUE) AS active_devices,
     (SELECT COUNT(*) FROM device WHERE status = FALSE) AS inactive_devices,
     (SELECT COUNT(*) FROM sensor_readings) AS total_sensor_readings;
+
+-- name: CountTotalActiveInactiveDevices :one
+SELECT
+    (SELECT COUNT(*) FROM device WHERE deleted = false) AS total_devices,
+    (SELECT COUNT(*) FROM device WHERE status = TRUE AND deleted = false) AS active_devices,
+    (SELECT COUNT(*) FROM device WHERE status = FALSE AND deleted = false) AS inactive_devices;
+    

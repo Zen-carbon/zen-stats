@@ -81,7 +81,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Emilio Cliff\",\n    \"email\": \"emiliocliff2@gmail.com\",\n    \"role\": \"user\",\n    \"isActive\": true\n}",
+							"raw": "{\n    \"name\": \"Emilio Cliff\",\n    \"email\": \"emiliocliff@gmail.com\",\n    \"role\": \"admin\",\n    \"isActive\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -310,7 +310,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"esp-22\",\n    \"status\": true\n}",
+							"raw": "{\n    \"name\": \"esp-23\",\n    \"status\": true,\n    \"reactor_id\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -332,6 +332,16 @@
 				{
 					"name": "Get Device",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -346,7 +356,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "3"
+									"value": "4"
 								}
 							]
 						}
@@ -373,11 +383,21 @@
 				{
 					"name": "Update Device",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"status\": false\n}",
+							"raw": "{\n    // \"status\": false\n    \"reactor_id\": 3\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -396,7 +416,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "3"
+									"value": "2"
 								}
 							]
 						}
@@ -525,7 +545,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/readings?device_id=1&list_by=timeslot&start=2025-11-12T11:52:31.581Z&end=2025-11-12T11:53:31.581Z&date=2025-11-18",
+							"raw": "{{base_url}}/readings?device_id=1&list_by=timeslot&start=2025-01-15T08:30:00.581Z&end=2025-01-15T08:35:00.581Z&date=2025-11-18",
 							"host": [
 								"{{base_url}}"
 							],
@@ -543,11 +563,11 @@
 								},
 								{
 									"key": "start",
-									"value": "2025-11-12T11:52:31.581Z"
+									"value": "2025-01-15T08:30:00.581Z"
 								},
 								{
 									"key": "end",
-									"value": "2025-11-12T11:53:31.581Z"
+									"value": "2025-01-15T08:35:00.581Z"
 								},
 								{
 									"key": "date",
@@ -934,6 +954,34 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Dashboard Stats",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/dashboard/stats",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"dashboard",
+						"stats"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -942,6 +990,7 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
+				"requests": {},
 				"exec": [
 					""
 				]
@@ -952,6 +1001,7 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
+				"requests": {},
 				"exec": [
 					""
 				]
@@ -961,18 +1011,19 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "https://zen-stats-production.up.railway.app/api/v1",
-			"type": "string"
+			"value": "https://zen-stats-production.up.railway.app/api/v1"
 		},
 		{
 			"key": "access_token",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
 			"key": "refresh_token",
-			"value": "",
-			"type": "string"
+			"value": ""
+		},
+		{
+			"key": "extra_field",
+			"value": "http://localhost:3030/api/v1"
 		}
 	]
 }

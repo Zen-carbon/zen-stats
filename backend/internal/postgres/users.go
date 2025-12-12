@@ -217,3 +217,53 @@ func mapDBUserToUser(dbUser generated.User) *repository.User {
 		CreatedAt:   dbUser.CreatedAt,
 	}
 }
+
+func (u *UserRepository) GetDashboardData(ctx context.Context, isAdmin bool) (*repository.DashboardStats, error) {
+	dashboardStats := &repository.DashboardStats{}
+
+	if isAdmin {
+		dbUserStats, err := u.queries.CountTotalInactiveActiveUsers(ctx)
+		if err != nil {
+			return nil, pkg.Errorf(pkg.INTERNAL_ERROR, "failed to get user stats: %v", err)
+		}
+		dashboardStats.TotalUsers = uint32(dbUserStats.TotalUsers)
+		dashboardStats.ActiveUsers = uint32(dbUserStats.ActiveUsers)
+		dashboardStats.InactiveUsers = uint32(dbUserStats.InactiveUsers)
+	}
+
+	dbDeviceStats, err := u.queries.CountTotalActiveInactiveDevices(ctx)
+	if err != nil {
+		return nil, pkg.Errorf(pkg.INTERNAL_ERROR, "failed to get device stats: %v", err)
+	}
+	dashboardStats.TotalDevices = uint32(dbDeviceStats.TotalDevices)
+	dashboardStats.ActiveDevices = uint32(dbDeviceStats.ActiveDevices)
+	dashboardStats.InactiveDevices = uint32(dbDeviceStats.InactiveDevices)
+
+	dbReactorStats, err := u.queries.CountActiveInactiveReactors(ctx)
+	if err != nil {
+		return nil, pkg.Errorf(pkg.INTERNAL_ERROR, "failed to get reactor stats: %v", err)
+	}
+	dashboardStats.TotalReactors = uint32(dbReactorStats.TotalReactors)
+	dashboardStats.ActiveReactors = uint32(dbReactorStats.ActiveReactors)
+	dashboardStats.InactiveReactors = uint32(dbReactorStats.InactiveReactors)
+
+	experimentsDoneToday, err := u.queries.CountExperimentsRunToday(ctx)
+	if err != nil {
+		return nil, pkg.Errorf(pkg.INTERNAL_ERROR, "failed to get experiments run today: %v", err)
+	}
+	dashboardStats.ExperimentsRunToday = uint32(experimentsDoneToday)
+
+	experimentsDoneThisWeek, err := u.queries.CountExperimentsRunThisWeek(ctx)
+	if err != nil {
+		return nil, pkg.Errorf(pkg.INTERNAL_ERROR, "failed to get experiments run this week: %v", err)
+	}
+	dashboardStats.ExperimentsRunThisWeek = uint32(experimentsDoneThisWeek)
+
+	avgExperimentDuration, err := u.queries.GetAverageExperimentDuration(ctx)
+	if err != nil {
+		return nil, pkg.Errorf(pkg.INTERNAL_ERROR, "failed to get average experiment duration: %v", err)
+	}
+	dashboardStats.AverageExperimentDurationSeconds = avgExperimentDuration
+
+	return dashboardStats, nil
+}
