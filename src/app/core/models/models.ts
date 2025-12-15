@@ -92,3 +92,14 @@ export interface BatchExperiment {
   createdAt: string;
 }
 
+
+export interface PaginationMeta {
+  has_next: boolean;
+  has_previous: boolean;
+  next_page: number | null;
+  previous_page: number | null;
+  page: number;
+  page_size: number;
+  total: number;
+  total_pages: number;
+}

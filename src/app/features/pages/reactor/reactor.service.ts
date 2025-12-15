@@ -16,9 +16,7 @@ export class ReactorService {
   pathway = signal('');
 
   constructor() {
-    effect(() => {
-      console.log('base', this.baseApiUrl());
-    });
+    effect(() => {});
   }
 
   baseApiUrl = computed(() => {
