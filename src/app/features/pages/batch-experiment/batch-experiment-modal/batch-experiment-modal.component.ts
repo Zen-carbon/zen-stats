@@ -72,12 +72,6 @@ export class BatchExperimentModalComponent {
 
   constructor() {
     this.initializeForm();
-    effect(() => {
-      const batch = this.batchExperimentData();
-      if (batch) {
-        console.log('batch data', batch);
-      }
-    });
   }
 
   private batchExperimentService = inject(BatchExperimentService);
@@ -146,10 +140,7 @@ export class BatchExperimentModalComponent {
   }
 
   removeAnalyticalTest(index: number) {
-    console.log('index', index);
-
     this.analyticalTests.removeAt(index);
-    // Clean up upload state for this index
     this.uploadingFiles.update((map) => {
       const newMap = new Map(map);
       newMap.delete(index);
@@ -162,12 +153,12 @@ export class BatchExperimentModalComponent {
   }
 
   populateForm() {
-    console.log('data', this.batchExperimentData());
-
     this.experimentForm.patchValue({
       batchId: this.batchExperimentData()?.batchId,
       operator: this.batchExperimentData()?.operator,
-      date: this.shortenDate(this.batchExperimentData()?.date || ''),
+      date: this.batchExperimentData()?.date
+        ? new Date(this.batchExperimentData()!.date!)
+        : null,
       reactorId: this.batchExperimentData()?.reactorId,
       blockId: this.batchExperimentData()?.blockId,
       timeStart: this.timeStringToDate(this.batchExperimentData()?.timeStart),

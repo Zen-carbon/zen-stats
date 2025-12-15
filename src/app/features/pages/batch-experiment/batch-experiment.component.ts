@@ -13,6 +13,7 @@ import { CommonModule, formatDate } from '@angular/common';
 import { batchExperimentQuery } from './batch-experiment.query';
 import { BatchExperiment } from '../../../core/models/models';
 import { BatchExperimentService } from './batch-experiment.service';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 @Component({
   selector: 'app-batch-experiment',
@@ -28,6 +29,7 @@ import { BatchExperimentService } from './batch-experiment.service';
     FormsModule,
     CommonModule,
     DatePickerModule,
+    PaginatorModule,
   ],
   templateUrl: './batch-experiment.component.html',
   providers: [ConfirmationService, MessageService],
@@ -47,8 +49,12 @@ export class BatchExperimentComponent {
   searchTerm = signal('');
   date = signal<Date | null>(null);
 
-  batchExperiments = batchExperimentQuery().batchExperimentData;
   private batchExperimentService = inject(BatchExperimentService);
+  pageSize = this.batchExperimentService.pageSize;
+  totalRecords = this.batchExperimentService.total;
+  first = signal(0);
+
+  batchExperiments = batchExperimentQuery().batchExperimentData;
 
   constructor() {
     effect(() => {
@@ -61,6 +67,12 @@ export class BatchExperimentComponent {
     });
   }
 
+  onPageChange(event: PaginatorState) {
+    this.batchExperimentService.limit.set(event.rows ?? 10);
+    this.batchExperimentService.page.set((event.page ?? 0) + 1);
+    this.first.set(event.first ?? 0);
+  }
+
   editBatchExperiment = (experiment: BatchExperiment | null) => {
     if (experiment) {
       this.batchExperimentModal.openModal(experiment);
@@ -68,7 +80,6 @@ export class BatchExperimentComponent {
       this.selectedExperiment.set(experiment);
       this.displayModal.set(true);
     } else {
-
       this.batchExperimentModal.openModal(null);
       this.displayModal.set(true);
     }
@@ -106,6 +117,9 @@ export class BatchExperimentComponent {
     this.searchTerm.set('');
     this.date.set(null);
     this.batchExperiments.refetch();
+    this.first.set(0);
+    this.batchExperimentService.page.set(1);
+    this.batchExperimentService.limit.set(10);
   }
 
   deleteBatchExperiment = (experimentId: number) => {
