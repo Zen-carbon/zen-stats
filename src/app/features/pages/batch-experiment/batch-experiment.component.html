@@ -7,7 +7,7 @@
 
       <div>
         <button
-          (click)="displayModal.set(true)"
+          (click)="editBatchExperiment(null)"
           pButton
           type="button"
           label="Add Batch"
@@ -136,6 +136,7 @@
   maximizable="true"
 >
   <app-batch-experiment-modal
+  #batchExperimentModal
     [batchExperimentData]="selectedExperiment()"
     (mutationStatus)="onMutateExperiment($event)"
     (closeModal)="displayModal.set(false)"

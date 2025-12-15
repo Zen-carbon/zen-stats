@@ -30,6 +30,7 @@ import { MessageService } from 'primeng/api';
 import { finalize } from 'rxjs';
 import { reactorQuery } from '../../reactor/reactor.query';
 import { FirebaseService } from '../../../../core/services/firebase.service';
+import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-batch-experiment-modal',
@@ -43,6 +44,7 @@ import { FirebaseService } from '../../../../core/services/firebase.service';
     ButtonModule,
     FileUploadModule,
     SelectModule,
+    ProgressSpinner,
   ],
   templateUrl: './batch-experiment-modal.component.html',
   styles: ``,
@@ -64,22 +66,12 @@ export class BatchExperimentModalComponent {
   @Input() batchExperimentData: BatchExperiment | null = null;
   closeModal = output<void>();
   selectedFile = signal<File | null>(null);
-  uploadingFile = signal({
-    status: false,
-    fileIndex: 0,
-  });
+  uploadingFiles = signal<Map<number, boolean>>(new Map());
 
   private firebaseService = inject(FirebaseService);
 
   constructor() {
     this.initializeForm();
-  }
-  ngOnChanges() {
-    if (this.batchExperimentData) {
-      this.populateForm();
-    } else {
-      this.experimentForm.reset();
-    }
   }
 
   private batchExperimentService = inject(BatchExperimentService);
@@ -116,6 +108,20 @@ export class BatchExperimentModalComponent {
       analyticalTests: this.fb.array([]),
     });
   }
+  openModal(batchData: BatchExperiment | null) {
+    this.batchExperimentData = batchData;
+
+    this.experimentForm.reset();
+    this.analyticalTests.clear();
+
+    if (batchData) {
+      this.populateForm();
+    }
+    this.modalVisible.set(true);
+  }
+  get formControls() {
+    return this.experimentForm.controls;
+  }
 
   get analyticalTests(): FormArray {
     return this.experimentForm.get('analyticalTests') as FormArray;
@@ -123,18 +129,31 @@ export class BatchExperimentModalComponent {
 
   private createAnalyticalTest(): FormGroup {
     return this.fb.group({
-      testType: ['', Validators.required],
+      name: ['', Validators.required],
       sampleId: ['', Validators.required],
       date: [null],
-      file: [null],
+      pdfUrl: [null],
     });
   }
+
   addAnalyticalTest() {
     this.analyticalTests.push(this.createAnalyticalTest());
   }
 
   removeAnalyticalTest(index: number) {
     this.analyticalTests.removeAt(index);
+    // Clean up upload state for this index
+    this.uploadingFiles.update((map) => {
+      const newMap = new Map(map);
+      newMap.delete(index);
+      return newMap;
+    });
+  }
+
+  removeFile(url: string, index: number) {
+    console.log('url', url);
+
+    this.analyticalTests.at(index).patchValue({ file: null });
   }
 
   populateForm() {
@@ -171,21 +190,59 @@ export class BatchExperimentModalComponent {
       headSpace: this.batchExperimentData?.exposureConditions?.headSpace,
       reactionTime: this.batchExperimentData?.exposureConditions?.reactionTime,
     });
+    this.populateAnalyticalTests(
+      this.batchExperimentData?.analyticalTests || []
+    );
   }
 
-  get formControls() {
-    return this.experimentForm.controls;
+  populateAnalyticalTests(tests: any[]) {
+    const formArray = this.analyticalTests;
+
+    formArray.clear();
+
+    tests.forEach((test) => {
+      formArray.push(
+        this.fb.group({
+          name: [test.name ?? '', Validators.required],
+          sampleId: [test.sampleId ?? '', Validators.required],
+          date: [test.date ? new Date(test.date) : null, Validators.required],
+          pdfUrl: [test.pdfUrl ?? ''],
+        })
+      );
+    });
   }
+
   onFileSelect(event: any, index: number) {
     const file = event.files?.[0];
     if (file) {
       this.selectedFile.set(file);
+      this.uploadingFiles.update((map) => {
+        const newMap = new Map(map);
+        newMap.set(index, true);
+        return newMap;
+      });
+
+      this.uploadFileEvent()
+        .then((fileUrl) => {
+          if (fileUrl) {
+            this.analyticalTests.at(index).patchValue({ pdfUrl: fileUrl });
+          }
+
+          this.uploadingFiles.update((map) => {
+            const newMap = new Map(map);
+            newMap.set(index, false);
+            return newMap;
+          });
+        })
+        .catch(() => {
+          // Clear uploading state on error
+          this.uploadingFiles.update((map) => {
+            const newMap = new Map(map);
+            newMap.set(index, false);
+            return newMap;
+          });
+        });
     }
-    this.uploadFileEvent().then((fileUrl) => {
-      if (fileUrl) {
-        this.analyticalTests.at(index).patchValue({ file: fileUrl });
-      }
-    });
   }
 
   async uploadFileEvent() {
@@ -278,7 +335,9 @@ export class BatchExperimentModalComponent {
 
   reset() {
     this.experimentForm.reset();
+    this.uploadingFiles.set(new Map());
   }
+
   private formatTime(date: any): string | null {
     if (!date) return null;
 
@@ -310,6 +369,7 @@ export class BatchExperimentModalComponent {
 
     return formattedDate;
   }
+
   private timeStringToDate(time: string | undefined): Date | null {
     if (!time) return null;
 
