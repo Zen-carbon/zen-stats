@@ -63,7 +63,7 @@ export class BatchExperimentModalComponent {
   ]);
   mutationStatus = output<Record<string, boolean | string>>();
   loading = signal(false);
-  @Input() batchExperimentData: BatchExperiment | null = null;
+  batchExperimentData = signal<BatchExperiment | null>(null);
   closeModal = output<void>();
   selectedFile = signal<File | null>(null);
   uploadingFiles = signal<Map<number, boolean>>(new Map());
@@ -72,6 +72,13 @@ export class BatchExperimentModalComponent {
 
   constructor() {
     this.initializeForm();
+    effect(() => {
+      const batch = this.batchExperimentData();
+      if (batch) {
+       console.log("batch data",batch);
+       
+      }
+    });
   }
 
   private batchExperimentService = inject(BatchExperimentService);
@@ -109,15 +116,14 @@ export class BatchExperimentModalComponent {
     });
   }
   openModal(batchData: BatchExperiment | null) {
-    this.batchExperimentData = batchData;
-
-    this.experimentForm.reset();
-    this.analyticalTests.clear();
-
+    this.batchExperimentData.set(batchData);
     if (batchData) {
       this.populateForm();
+    } else {
+      this.reset();
     }
-    this.modalVisible.set(true);
+
+   this.modalVisible.set(true);
   }
   get formControls() {
     return this.experimentForm.controls;
@@ -141,6 +147,8 @@ export class BatchExperimentModalComponent {
   }
 
   removeAnalyticalTest(index: number) {
+    console.log("index", index);
+    
     this.analyticalTests.removeAt(index);
     // Clean up upload state for this index
     this.uploadingFiles.update((map) => {
@@ -157,41 +165,43 @@ export class BatchExperimentModalComponent {
   }
 
   populateForm() {
-    console.log('data', this.batchExperimentData);
+    console.log('data', this.batchExperimentData());
 
     this.experimentForm.patchValue({
-      batchId: this.batchExperimentData?.batchId,
-      operator: this.batchExperimentData?.operator,
-      date: this.shortenDate(this.batchExperimentData?.date || ''),
-      reactorId: this.batchExperimentData?.reactorId,
-      blockId: this.batchExperimentData?.blockId,
-      timeStart: this.timeStringToDate(this.batchExperimentData?.timeStart),
-      timeEnd: this.timeStringToDate(this.batchExperimentData?.timeEnd),
+      batchId: this.batchExperimentData()?.batchId,
+      operator: this.batchExperimentData()?.operator,
+      date: this.shortenDate(this.batchExperimentData()?.date || ''),
+      reactorId: this.batchExperimentData()?.reactorId,
+      blockId: this.batchExperimentData()?.blockId,
+      timeStart: this.timeStringToDate(this.batchExperimentData()?.timeStart),
+      timeEnd: this.timeStringToDate(this.batchExperimentData()?.timeEnd),
 
-      mixDesign: this.batchExperimentData?.materialFeedstock?.mixDesign,
-      cement: this.batchExperimentData?.materialFeedstock?.cement,
-      fineAggregate: this.batchExperimentData?.materialFeedstock?.fineAggregate,
+      mixDesign: this.batchExperimentData()?.materialFeedstock?.mixDesign,
+      cement: this.batchExperimentData()?.materialFeedstock?.cement,
+      fineAggregate:
+        this.batchExperimentData()?.materialFeedstock?.fineAggregate,
       coarseAggregate:
-        this.batchExperimentData?.materialFeedstock?.coarseAggregate,
-      water: this.batchExperimentData?.materialFeedstock?.water,
+        this.batchExperimentData()?.materialFeedstock?.coarseAggregate,
+      water: this.batchExperimentData()?.materialFeedstock?.water,
       waterCementRatio:
-        this.batchExperimentData?.materialFeedstock?.waterCementRatio,
+        this.batchExperimentData()?.materialFeedstock?.waterCementRatio,
       blockSizeLength:
-        this.batchExperimentData?.materialFeedstock?.blockSizeLength,
+        this.batchExperimentData()?.materialFeedstock?.blockSizeLength,
       blockSizeWidth:
-        this.batchExperimentData?.materialFeedstock?.blockSizeWidth,
+        this.batchExperimentData()?.materialFeedstock?.blockSizeWidth,
       blockSizeHeight:
-        this.batchExperimentData?.materialFeedstock?.blockSizeHeight,
+        this.batchExperimentData()?.materialFeedstock?.blockSizeHeight,
 
-      co2Form: this.batchExperimentData?.exposureConditions?.co2Form,
-      co2Mass: this.batchExperimentData?.exposureConditions?.co2Mass,
+      co2Form: this.batchExperimentData()?.exposureConditions?.co2Form,
+      co2Mass: this.batchExperimentData()?.exposureConditions?.co2Mass,
       injectionPressure:
-        this.batchExperimentData?.exposureConditions?.injectionPressure,
-      headSpace: this.batchExperimentData?.exposureConditions?.headSpace,
-      reactionTime: this.batchExperimentData?.exposureConditions?.reactionTime,
+        this.batchExperimentData()?.exposureConditions?.injectionPressure,
+      headSpace: this.batchExperimentData()?.exposureConditions?.headSpace,
+      reactionTime:
+        this.batchExperimentData()?.exposureConditions?.reactionTime,
     });
     this.populateAnalyticalTests(
-      this.batchExperimentData?.analyticalTests || []
+      this.batchExperimentData()?.analyticalTests || []
     );
   }
 
@@ -251,7 +261,6 @@ export class BatchExperimentModalComponent {
         const fileUrl = await this.firebaseService.uploadImage(
           this.selectedFile()!
         );
-        console.log('file url', fileUrl);
 
         return fileUrl;
       } catch (error) {
@@ -278,8 +287,8 @@ export class BatchExperimentModalComponent {
 
     this.loading.set(true);
 
-    this.batchExperimentData
-      ? this.updateBatchExperiment(this.batchExperimentData.id, payload)
+    this.batchExperimentData()
+      ? this.updateBatchExperiment(this.batchExperimentData()!.id, payload)
       : this.createBatchExperiment(payload);
   }
 
@@ -336,6 +345,7 @@ export class BatchExperimentModalComponent {
   reset() {
     this.experimentForm.reset();
     this.uploadingFiles.set(new Map());
+    this.analyticalTests.clear();
   }
 
   private formatTime(date: any): string | null {
