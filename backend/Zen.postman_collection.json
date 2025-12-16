@@ -545,7 +545,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/readings?device_id=1&list_by=timeslot&start=2025-01-15T08:30:00.581Z&end=2025-01-15T08:35:00.581Z&date=2025-11-18",
+							"raw": "{{base_url}}/readings?device_id=17&list_by=date&date=2025-12-15",
 							"host": [
 								"{{base_url}}"
 							],
@@ -555,24 +555,63 @@
 							"query": [
 								{
 									"key": "device_id",
-									"value": "1"
+									"value": "17"
 								},
 								{
 									"key": "list_by",
-									"value": "timeslot"
+									"value": "date"
 								},
 								{
 									"key": "start",
-									"value": "2025-01-15T08:30:00.581Z"
+									"value": "2025-12-15T08:30:00.581Z",
+									"disabled": true
 								},
 								{
 									"key": "end",
-									"value": "2025-01-15T08:35:00.581Z"
+									"value": "2025-12-15T08:35:00.581Z",
+									"disabled": true
 								},
 								{
 									"key": "date",
-									"value": "2025-11-18"
+									"value": "2025-12-15"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deviceId\": 17,\n    \"start\": \"2025-12-15T08:33:00.581Z\",\n    \"end\": \"2025-12-15T08:35:00.581Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/reports/readings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reports",
+								"readings"
 							]
 						}
 					},
@@ -1024,6 +1063,10 @@
 		{
 			"key": "extra_field",
 			"value": "http://localhost:3030/api/v1"
+		},
+		{
+			"key": "another_filed",
+			"value": ""
 		}
 	]
 }
