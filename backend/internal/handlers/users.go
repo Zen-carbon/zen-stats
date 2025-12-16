@@ -181,6 +181,32 @@ func (s *Server) deleteUser(ctx *gin.Context) {
 		return
 	}
 
+	payload, exists := ctx.Get(authorizationPayloadKey)
+	if !exists {
+		ctx.JSON(
+			http.StatusUnauthorized,
+			errorResponse(pkg.Errorf(pkg.AUTHENTICATION_ERROR, "Unauthorized")),
+		)
+		return
+	}
+
+	userPayload, ok := payload.(*pkg.Payload)
+	if !ok {
+		ctx.JSON(
+			http.StatusUnauthorized,
+			errorResponse(pkg.Errorf(pkg.AUTHENTICATION_ERROR, "Invalid auth payload")),
+		)
+		return
+	}
+
+	if userPayload.Role != "admin" {
+		ctx.JSON(
+			http.StatusForbidden,
+			errorResponse(pkg.Errorf(pkg.FORBIDDEN_ERROR, "Only admin users can delete users")),
+		)
+		return
+	}
+
 	if err := s.repo.UserRepository.DeleteUser(ctx, id); err != nil {
 		ctx.JSON(pkg.ErrorToStatusCode(err), errorResponse(err))
 		return
