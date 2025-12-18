@@ -23,6 +23,8 @@ import { Breadcrumb } from 'primeng/breadcrumb';
 import { DeviceDetailService } from './device-detail.service';
 import { DeviceSummary } from '../../../core/models/models';
 import { finalize } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { Toast } from "primeng/toast";
 
 // Updated interfaces
 export interface DeviceDetail {
@@ -52,9 +54,11 @@ interface DynamicChartData {
     DividerModule,
     Breadcrumb,
     ButtonDirective,
-  ],
+    Toast
+],
   templateUrl: './device-detail.component.html',
   styles: ``,
+  providers: [MessageService],
 })
 export class DeviceDetailComponent {
   deviceId = input.required<string | number>();
@@ -73,6 +77,7 @@ export class DeviceDetailComponent {
   home = { icon: 'pi pi-cog', url: '/devices', label: 'Devices' };
 
   private deviceService = inject(DeviceDetailService);
+  private messageService = inject(MessageService);
 
   private colorPalette = [];
 
@@ -230,11 +235,15 @@ export class DeviceDetailComponent {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (blob) => {
-          const filename = `device_${this.deviceId()}.xlsx`;
+          const filename = `device_${this.deviceId()}_report.xlsx`;
           this.downloadExcelFile(blob, filename);
         },
         error: (error) => {
-          console.error('Error exporting data:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Export Error',
+            detail: error,
+          });
         },
       });
   };

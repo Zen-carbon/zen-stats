@@ -74,7 +74,8 @@ export class DeviceDetailService {
       })
       .pipe(
         catchError((error) => {
-          throw new Error(`Error exporting device data: ${error.message}`);
+          console.error('Export error:', error);
+          throw new Error(`Error exporting device data`);
         })
       );
   };
