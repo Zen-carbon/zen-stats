@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, map, catchError } from 'rxjs';
-import { environment } from '../../../../environments/environment.development';
 import { Device } from '../../../core/models/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DeviceService {
-  private readonly apiUrl = environment.APIURL;
+  private  apiUrl = import.meta.env.NG_APP_APIURL;
 
   private http = inject(HttpClient);
   getDevices = (): Observable<Device[]> => {

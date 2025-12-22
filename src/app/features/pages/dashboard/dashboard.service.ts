@@ -1,14 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment.development';
-import { catchError, map, Observable, of, tap } from 'rxjs';
-import { Device } from '../../../core/models/models';
+import { catchError, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DashboardService {
-  private readonly apiUrl = environment.APIURL;
+  private readonly apiUrl = import.meta.env.NG_APP_APIURL;
 
   private http = inject(HttpClient);
 
@@ -23,5 +21,4 @@ export class DashboardService {
         })
       );
   };
-  
 }

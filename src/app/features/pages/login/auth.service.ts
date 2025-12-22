@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { catchError, map, Observable, tap } from 'rxjs';
-import { environment } from '../../../../environments/environment.development';
 import { LoginResponse, User } from '../../../core/models/models';
 import { Router } from '@angular/router';
 
@@ -17,7 +16,7 @@ type AuthState = {
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private readonly apiUrl = environment.APIURL;
+  private apiUrl = import.meta.env.NG_APP_APIURL;
   private readonly SESSIONKEY = 'zen_session';
   private readonly USERKEY = 'zen_user';
 
