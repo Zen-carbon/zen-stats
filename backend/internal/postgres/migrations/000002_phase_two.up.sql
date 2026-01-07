@@ -4,7 +4,7 @@ CREATE TABLE "users" (
   "id" bigserial PRIMARY KEY,
   "name" varchar(50) NOT NULL,
   "email" varchar(50) UNIQUE NOT NULL,
-  "phone_number" varchar(50) UNIQUE NULL,
+  "phone_number" varchar(50) NULL,
   "password" varchar(255) NOT NULL,
   "role" role NOT NULL DEFAULT 'user',
   "is_active" boolean NOT NULL DEFAULT true,

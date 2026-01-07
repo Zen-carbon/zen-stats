@@ -114,8 +114,11 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 
 const deleteUser = `-- name: DeleteUser :exec
 UPDATE users
-SET deleted_at = NOW()
-WHERE id = $1 AND deleted_at IS NULL
+SET
+    deleted_at = NOW(),
+    email = email || '.deleted.' || EXTRACT(EPOCH FROM NOW())::bigint
+WHERE id = $1
+  AND deleted_at IS NULL
 `
 
 func (q *Queries) DeleteUser(ctx context.Context, id int64) error {
@@ -267,9 +270,10 @@ UPDATE users
 SET name = coalesce($1, name),
     email = coalesce($2, email),
     phone_number = coalesce($3, phone_number),
-    role = coalesce($4, role),
-    is_active = coalesce($5, is_active)
-WHERE id = $6 AND deleted_at IS NULL
+    password = coalesce($4, password),
+    role = coalesce($5, role),
+    is_active = coalesce($6, is_active)
+WHERE id = $7 AND deleted_at IS NULL
 RETURNING id, name, email, phone_number, password, role, is_active, refresh_token, created_at, deleted_at
 `
 
@@ -277,6 +281,7 @@ type UpdateUserParams struct {
 	Name        pgtype.Text `json:"name"`
 	Email       pgtype.Text `json:"email"`
 	PhoneNumber pgtype.Text `json:"phone_number"`
+	Password    pgtype.Text `json:"password"`
 	Role        NullRole    `json:"role"`
 	IsActive    pgtype.Bool `json:"is_active"`
 	ID          int64       `json:"id"`
@@ -287,6 +292,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		arg.Name,
 		arg.Email,
 		arg.PhoneNumber,
+		arg.Password,
 		arg.Role,
 		arg.IsActive,
 		arg.ID,

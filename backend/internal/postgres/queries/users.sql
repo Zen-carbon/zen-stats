@@ -23,6 +23,7 @@ UPDATE users
 SET name = coalesce(sqlc.narg('name'), name),
     email = coalesce(sqlc.narg('email'), email),
     phone_number = coalesce(sqlc.narg('phone_number'), phone_number),
+    password = coalesce(sqlc.narg('password'), password),
     role = coalesce(sqlc.narg('role'), role),
     is_active = coalesce(sqlc.narg('is_active'), is_active)
 WHERE id = sqlc.arg('id') AND deleted_at IS NULL
@@ -30,8 +31,11 @@ RETURNING *;
 
 -- name: DeleteUser :exec
 UPDATE users
-SET deleted_at = NOW()
-WHERE id = $1 AND deleted_at IS NULL;
+SET
+    deleted_at = NOW(),
+    email = email || '.deleted.' || EXTRACT(EPOCH FROM NOW())::bigint
+WHERE id = $1
+  AND deleted_at IS NULL;
 
 -- name: UpdateUserPassword :exec
 UPDATE users

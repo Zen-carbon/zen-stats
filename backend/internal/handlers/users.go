@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/Edwin9301/Zen/backend/internal/repository"
@@ -132,7 +131,6 @@ func (s *Server) updateUser(ctx *gin.Context) {
 
 		return
 	}
-	log.Println(req)
 
 	payload, exists := ctx.Get(authorizationPayloadKey)
 	if !exists {
@@ -166,6 +164,15 @@ func (s *Server) updateUser(ctx *gin.Context) {
 		return
 	}
 	req.ID = id
+
+	if req.Password != nil {
+		hashedPassword, err := pkg.GenerateHashPassword(*req.Password, s.config.PASSWORD_COST)
+		if err != nil {
+			ctx.JSON(pkg.ErrorToStatusCode(err), errorResponse(err))
+			return
+		}
+		req.Password = &hashedPassword
+	}
 
 	if err := s.repo.UserRepository.UpdateUser(ctx, &req); err != nil {
 		ctx.JSON(pkg.ErrorToStatusCode(err), errorResponse(err))

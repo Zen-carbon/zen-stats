@@ -24,6 +24,7 @@ type UpdateUser struct {
 	PhoneNumber *string `json:"phoneNumber"`
 	Role        *string `json:"role"`
 	IsActive    *bool   `json:"isActive"`
+	Password    *string `json:"password"`
 }
 
 type FilterUsers struct {

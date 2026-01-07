@@ -76,6 +76,7 @@ func (u *UserRepository) UpdateUser(ctx context.Context, updateUser *repository.
 		Name:        pgtype.Text{Valid: false},
 		Email:       pgtype.Text{Valid: false},
 		PhoneNumber: pgtype.Text{Valid: false},
+		Password:    pgtype.Text{Valid: false},
 		Role:        generated.NullRole{Valid: false},
 		IsActive:    pgtype.Bool{Valid: false},
 	}
@@ -88,6 +89,9 @@ func (u *UserRepository) UpdateUser(ctx context.Context, updateUser *repository.
 	}
 	if updateUser.PhoneNumber != nil {
 		updateParams.PhoneNumber = pgtype.Text{String: *updateUser.PhoneNumber, Valid: true}
+	}
+	if updateUser.Password != nil {
+		updateParams.Password = pgtype.Text{String: *updateUser.Password, Valid: true}
 	}
 	if updateUser.Role != nil {
 		updateParams.Role = generated.NullRole{Role: generated.Role(*updateUser.Role), Valid: true}
