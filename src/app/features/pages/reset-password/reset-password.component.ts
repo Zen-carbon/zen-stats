@@ -24,7 +24,7 @@ export class ResetPasswordComponent {
   loading = signal(false);
   resetPasswordForm!: FormGroup;
   token = '';
-  errorMessage = signal('ss');
+  errorMessage = signal('');
   password = signal('');
   confirmPassword = signal('');
 
