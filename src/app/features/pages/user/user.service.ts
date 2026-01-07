@@ -16,10 +16,11 @@ export class UserService {
       map((response) => response.data),
       catchError((error) => {
         console.error('Error fetching users:', error); 
-        
         throw new Error(`Error fetching users: ${error.error.message}`);
       })
     );
+
+    
   };
 
   createUser = (user: User): Observable<User> => {

@@ -20,6 +20,8 @@ export class HeaderComponent {
   username = inject(AuthService).currentUser;
   private logout = inject(AuthService).logout;
   loading = signal(false);
+
+  
   logOut() {
     this.loading.set(true);
     this.logout()

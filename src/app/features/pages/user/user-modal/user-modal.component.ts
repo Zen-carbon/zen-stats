@@ -3,6 +3,7 @@ import {
   effect,
   inject,
   input,
+  model,
   output,
   signal,
 } from '@angular/core';
@@ -24,6 +25,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { UserService } from '../user.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { finalize } from 'rxjs';
+import { Password } from 'primeng/password';
 
 @Component({
   selector: 'app-user-modal',
@@ -37,6 +39,7 @@ import { finalize } from 'rxjs';
     CommonModule,
     TagModule,
     InputNumberModule,
+    Password,
   ],
   templateUrl: './user-modal.component.html',
   styles: ``,
@@ -46,7 +49,7 @@ export class UserModalComponent {
   userForm!: FormGroup;
   loading = signal(false);
   mutationStatus = output<Record<string, boolean | string>>();
-  closeModal = output<void>();
+  modalStatus = model();
 
   private fb = inject(FormBuilder);
   private userService = inject(UserService);
@@ -54,7 +57,9 @@ export class UserModalComponent {
   constructor() {
     this.initiateForm();
     effect(() => {
-      console.log('user', this.userDataInput());
+      if (!this.modalStatus()) {
+        this.reset();
+      }
     });
   }
 
@@ -77,6 +82,7 @@ export class UserModalComponent {
     this.userForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.minLength(6)],
       phoneNumber: ['', Validators.minLength(8)],
       role: ['', Validators.required],
     });
@@ -140,10 +146,9 @@ export class UserModalComponent {
       name: user.name,
       phoneNumber: user.phoneNumber,
       role: user.role,
+      password: user.password,
     };
 
-    console.log("saa", updateUserPayload);
-    
     this.userService
       .updateUser(this.userDataInput()!.id, updateUserPayload)
       .pipe(
@@ -171,5 +176,6 @@ export class UserModalComponent {
   deleteUser = () => {};
   private reset = () => {
     this.userForm.reset();
+    this.userDataInput.set(null);
   };
 }
