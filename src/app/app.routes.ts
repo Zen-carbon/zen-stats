@@ -16,6 +16,7 @@ export const routes: Routes = [
         (m) => m.ResetPasswordComponent
       ),
   },
+  
   {
     path: '',
     component: MainLayoutComponent,
