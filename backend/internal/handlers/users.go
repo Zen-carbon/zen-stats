@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/Edwin9301/Zen/backend/internal/repository"
@@ -131,6 +132,7 @@ func (s *Server) updateUser(ctx *gin.Context) {
 
 		return
 	}
+	log.Println(req)
 
 	payload, exists := ctx.Get(authorizationPayloadKey)
 	if !exists {
