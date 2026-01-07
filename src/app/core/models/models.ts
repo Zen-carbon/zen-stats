@@ -37,6 +37,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
+  password: string;
   phoneNumber: string;
   role: 'admin' | 'user';
   isActive: boolean;
@@ -92,7 +93,6 @@ export interface BatchExperiment {
   createdAt: string;
 }
 
-
 export interface PaginationMeta {
   has_next: boolean;
   has_previous: boolean;
@@ -103,5 +103,3 @@ export interface PaginationMeta {
   total: number;
   total_pages: number;
 }
-
-

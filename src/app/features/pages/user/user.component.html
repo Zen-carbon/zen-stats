@@ -120,11 +120,7 @@
     [style]="{ width: '500px', }"
     maximizable="true"
   >
-    <app-user-modal
-      #userModal
-      (closeModal)="displayModal.set(false)"
-      (mutationStatus)="onMutationStatus($event)"
-    />
+    <app-user-modal #userModal [(modalStatus)]="displayModal" (mutationStatus)="onMutationStatus($event)" />
   </p-dialog>
   <p-toast />
   <p-confirmdialog />

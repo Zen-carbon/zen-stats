@@ -10,6 +10,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'reset-password',
+    loadComponent: () =>
+      import('./features/pages/reset-password/reset-password.component').then(
+        (m) => m.ResetPasswordComponent
+      ),
+  },
+  {
     path: '',
     component: MainLayoutComponent,
     loadChildren: () => import('./features/routes').then((m) => m.routes),
