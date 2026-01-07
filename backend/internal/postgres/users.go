@@ -99,7 +99,7 @@ func (u *UserRepository) UpdateUser(ctx context.Context, updateUser *repository.
 	_, err := u.queries.UpdateUser(ctx, updateParams)
 	if err != nil {
 		if pkg.PgxErrorCode(err) == pkg.UNIQUE_VIOLATION {
-			return pkg.Errorf(pkg.ALREADY_EXISTS_ERROR, "user with email or phonenumber already exists")
+			return pkg.Errorf(pkg.ALREADY_EXISTS_ERROR, "user with email or phonenumber already exists: %s", err.Error())
 		}
 		return pkg.Errorf(pkg.INTERNAL_ERROR, "failed to update user: %v", err)
 	}
