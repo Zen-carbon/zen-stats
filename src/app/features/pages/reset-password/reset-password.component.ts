@@ -12,10 +12,11 @@ import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Message } from 'primeng/message';
 import { finalize } from 'rxjs';
+import { Toast } from 'primeng/toast';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [Password, ButtonModule, ReactiveFormsModule, Message],
+  imports: [Password, ButtonModule, ReactiveFormsModule, Message, Toast],
   templateUrl: './reset-password.component.html',
   styles: ``,
   providers: [MessageService],
