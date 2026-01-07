@@ -1,5 +1,4 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-import { environment } from '../../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, tap } from 'rxjs';
 import { BatchExperiment, PaginationMeta } from '../../../core/models/models';
@@ -8,7 +7,7 @@ import { BatchExperiment, PaginationMeta } from '../../../core/models/models';
   providedIn: 'root',
 })
 export class BatchExperimentService {
-  private readonly apiUrl = environment.APIURL;
+  private apiUrl = import.meta.env.NG_APP_APIURL;
   private http = inject(HttpClient);
 
   search = signal('');

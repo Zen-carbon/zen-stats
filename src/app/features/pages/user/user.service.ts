@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, tap } from 'rxjs';
 import { User } from '../../../core/models/models';
@@ -8,7 +7,7 @@ import { User } from '../../../core/models/models';
   providedIn: 'root',
 })
 export class UserService {
-  private readonly apiUrl = environment.APIURL;
+  private apiUrl = import.meta.env.NG_APP_APIURL;
 
   private http = inject(HttpClient);
 
@@ -16,7 +15,8 @@ export class UserService {
     return this.http.get<{ data: User[] }>(`${this.apiUrl}/users`).pipe(
       map((response) => response.data),
       catchError((error) => {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching users:', error); 
+        
         throw new Error(`Error fetching users: ${error.error.message}`);
       })
     );
