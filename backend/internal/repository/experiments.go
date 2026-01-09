@@ -41,6 +41,7 @@ type ExposureConditions struct {
 	InjectionPressure string `json:"injectionPressure"`
 	HeadSpace         string `json:"headSpace"`
 	ReactionTime      string `json:"reactionTime"`
+	Energy            string `json:"energy"`
 }
 
 type AnalyticalTests struct {

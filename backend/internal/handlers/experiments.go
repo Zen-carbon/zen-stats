@@ -36,6 +36,7 @@ type createExperimentReq struct {
 	InjectionPressure string `json:"injectionPressure"`
 	HeadSpace         string `json:"headSpace"`
 	ReactionTime      string `json:"reactionTime"`
+	Energy            string `json:"energy"`
 
 	// Analytical tests can stay optional for now
 	AnalyticalTests []struct {
@@ -85,6 +86,7 @@ func (s *Server) createExperiment(ctx *gin.Context) {
 			InjectionPressure: req.InjectionPressure,
 			HeadSpace:         req.HeadSpace,
 			ReactionTime:      req.ReactionTime,
+			Energy:            req.Energy,
 		},
 		AnalyticalTests: make([]repository.AnalyticalTests, len(req.AnalyticalTests)),
 	}
@@ -174,6 +176,7 @@ func (s *Server) updateExperiment(ctx *gin.Context) {
 			InjectionPressure: req.InjectionPressure,
 			HeadSpace:         req.HeadSpace,
 			ReactionTime:      req.ReactionTime,
+			Energy:            req.Energy,
 		},
 		AnalyticalTests: make([]repository.AnalyticalTests, len(req.AnalyticalTests)),
 	}
