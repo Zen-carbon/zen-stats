@@ -68,6 +68,7 @@ export interface ExposureConditions {
   injectionPressure: string;
   headSpace: string;
   reactionTime: string;
+  energy: string;
 }
 
 export interface AnalyticalTest {
