@@ -112,6 +112,7 @@ export class BatchExperimentModalComponent {
       injectionPressure: [null, Validators.min(0)],
       headSpace: [null, Validators.min(0)],
       reactionTime: [null, Validators.min(0)],
+      energy: [null, Validators.min(0)],
 
       analyticalTests: this.fb.array([]),
     });
@@ -195,6 +196,7 @@ export class BatchExperimentModalComponent {
       headSpace: this.batchExperimentData()?.exposureConditions?.headSpace,
       reactionTime:
         this.batchExperimentData()?.exposureConditions?.reactionTime,
+      energy: this.batchExperimentData()?.exposureConditions?.energy,
     });
     this.populateAnalyticalTests(
       this.batchExperimentData()?.analyticalTests || []
