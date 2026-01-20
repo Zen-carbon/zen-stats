@@ -20,23 +20,23 @@ type createExperimentReq struct {
 	TimeEnd   string `json:"timeEnd" binding:"required"`
 
 	// Material Feedstock (flattened)
-	MixDesign        string `json:"mixDesign"`
-	Cement           any    `json:"cement"`
-	FineAggregate    string `json:"fineAggregate"`
-	CoarseAggregate  string `json:"coarseAggregate"`
-	Water            string `json:"water"`
-	WaterCementRatio string `json:"waterCementRatio"`
-	BlockSizeLength  string `json:"blockSizeLength"`
-	BlockSizeWidth   string `json:"blockSizeWidth"`
-	BlockSizeHeight  string `json:"blockSizeHeight"`
+	MixDesign        any `json:"mixDesign"`
+	Cement           any `json:"cement"`
+	FineAggregate    any `json:"fineAggregate"`
+	CoarseAggregate  any `json:"coarseAggregate"`
+	Water            any `json:"water"`
+	WaterCementRatio any `json:"waterCementRatio"`
+	BlockSizeLength  any `json:"blockSizeLength"`
+	BlockSizeWidth   any `json:"blockSizeWidth"`
+	BlockSizeHeight  any `json:"blockSizeHeight"`
 
 	// Exposure Conditions (flattened)
-	Co2Form           string `json:"co2Form"`
-	Co2Mass           string `json:"co2Mass"`
-	InjectionPressure string `json:"injectionPressure"`
-	HeadSpace         string `json:"headSpace"`
-	ReactionTime      string `json:"reactionTime"`
-	Energy            string `json:"energy"`
+	Co2Form           any `json:"co2Form"`
+	Co2Mass           any `json:"co2Mass"`
+	InjectionPressure any `json:"injectionPressure"`
+	HeadSpace         any `json:"headSpace"`
+	ReactionTime      any `json:"reactionTime"`
+	Energy            any `json:"energy"`
 
 	// Analytical tests can stay optional for now
 	AnalyticalTests []struct {
