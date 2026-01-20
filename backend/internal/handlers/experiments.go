@@ -21,7 +21,7 @@ type createExperimentReq struct {
 
 	// Material Feedstock (flattened)
 	MixDesign        string `json:"mixDesign"`
-	Cement           string `json:"cement"`
+	Cement           any    `json:"cement"`
 	FineAggregate    string `json:"fineAggregate"`
 	CoarseAggregate  string `json:"coarseAggregate"`
 	Water            string `json:"water"`
